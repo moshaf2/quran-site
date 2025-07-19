@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>المصحف الشريف</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>المصحف الشريف</h1>
+  <div id="quran-container">
+    <p>جارٍ تحميل المصحف...</p>
+  </div>
+
+  <script>
+    fetch('https://api.alquran.cloud/v1/quran/ar.alafasy')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('quran-container');
+        container.innerHTML = '';
+
+        data.data.surahs.forEach(surah => {
+          const surahDiv = document.createElement('div');
+          surahDiv.className = 'surah';
+
+          const title = document.createElement('h2');
+          title.textContent = `سورة ${surah.name}`;
+          surahDiv.appendChild(title);
+
+          surah.ayahs.forEach(ayah => {
+            const p = document.createElement('p');
+            p.innerHTML = `<span class="ayah">${ayah.text}</span> <span class="number">﴿${ayah.numberInSurah}﴾</span>`;
+            surahDiv.appendChild(p);
+          });
+
+          container.appendChild(surahDiv);
+        });
+      })
+      .catch(error => {
+        document.getElementById('quran-container').innerHTML = 'حدث خطأ أثناء تحميل المصحف.';
+        console.error(error);
+      });
+  </script>
+</body>
+</html>
