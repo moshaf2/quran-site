@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>المصحف الشريف - قناة القرآن</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
   <aside id="sidebar">
     <h2>المصحف الشريف</h2>
-    <input type="text" id="search" placeholder="ابحث عن سورة">
+    <input type="text" id="search" placeholder="ابحث عن سورة" />
     <ul id="surah-list"></ul>
   </aside>
 
@@ -18,48 +18,6 @@
     <div id="ayahs-container"></div>
   </main>
 
-  <script>
-    let surahs = [];
-
-    fetch('https://api.alquran.cloud/v1/quran/ar.alafasy')
-      .then(response => response.json())
-      .then(data => {
-        surahs = data.data.surahs;
-        const list = document.getElementById('surah-list');
-        list.innerHTML = '';
-        surahs.forEach((s, i) => {
-          const li = document.createElement('li');
-          li.textContent = s.name;
-          li.onclick = () => showSurah(i);
-          list.appendChild(li);
-        });
-      });
-
-    function showSurah(index) {
-      const surah = surahs[index];
-      document.getElementById('surah-title').textContent = `سورة ${surah.name}`;
-      const container = document.getElementById('ayahs-container');
-      container.innerHTML = '';
-      surah.ayahs.forEach(a => {
-        const p = document.createElement('p');
-        p.innerHTML = `<span class="ayah">${a.text}</span> <span class="number">﴿${a.numberInSurah}﴾</span>`;
-        container.appendChild(p);
-      });
-    }
-
-    document.getElementById('search').addEventListener('input', function () {
-      const value = this.value.trim();
-      const list = document.getElementById('surah-list');
-      list.innerHTML = '';
-      surahs.forEach((s, i) => {
-        if (s.name.includes(value)) {
-          const li = document.createElement('li');
-          li.textContent = s.name;
-          li.onclick = () => showSurah(i);
-          list.appendChild(li);
-        }
-      });
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
